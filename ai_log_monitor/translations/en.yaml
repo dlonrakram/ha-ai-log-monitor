@@ -1,0 +1,41 @@
+configuration:
+  pplx_api_key:
+    name: Perplexity API Key
+    description: >-
+      Your Perplexity API key. Obtain one from
+      https://www.perplexity.ai/settings/api (Settings > API).
+  pplx_model:
+    name: Perplexity Model
+    description: >-
+      Which Sonar model to use. "sonar" is cheapest (~$0.006/query).
+      "sonar-pro" gives deeper analysis. "sonar-reasoning-pro" adds
+      multi-step reasoning at higher cost.
+  run_time:
+    name: Daily Run Time
+    description: >-
+      Time of day (HH:MM, 24-hour format) to run the analysis in your
+      Home Assistant timezone. Example: 07:00
+  notify_service:
+    name: Notification Service
+    description: >-
+      The Home Assistant notification service to call with the summary.
+      Examples: persistent_notification.create, notify.mobile_app_pixel,
+      notify.mobile_app_iphone. Use "persistent_notification.create" for
+      a notification in the HA sidebar.
+  max_log_chars:
+    name: Maximum Log Characters
+    description: >-
+      Maximum number of characters of log text to send to the AI for
+      analysis. Larger values give more thorough analysis but cost more
+      tokens. 60000 chars ≈ 15000 tokens.
+  log_lines:
+    name: Log Lines to Fetch
+    description: >-
+      Number of recent log lines to fetch from Home Assistant Core.
+      These are then truncated to max_log_chars before sending to the AI.
+  write_to_system_log:
+    name: Write Detailed Report to System Log
+    description: >-
+      If enabled, writes the full detailed analysis to the Home Assistant
+      system log (visible in Settings > System > Logs) in addition to the
+      notification summary.

@@ -1,0 +1,21 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# AI Log Monitor — Entrypoint
+# ==============================================================================
+
+bashio::log.info "Starting AI Log Monitor..."
+
+# Pass options as environment variables so the Python code can read them
+# without depending on bashio inside Python.
+export PPLX_API_KEY="$(bashio::config 'pplx_api_key')"
+export PPLX_MODEL="$(bashio::config 'pplx_model')"
+export RUN_TIME="$(bashio::config 'run_time')"
+export NOTIFY_SERVICE="$(bashio::config 'notify_service')"
+export MAX_LOG_CHARS="$(bashio::config 'max_log_chars')"
+export LOG_LINES="$(bashio::config 'log_lines')"
+export WRITE_TO_SYSTEM_LOG="$(bashio::config 'write_to_system_log')"
+
+# SUPERVISOR_TOKEN is automatically injected by the Supervisor.
+# It is used for both log collection and HA API calls.
+
+exec python3 /app/main.py

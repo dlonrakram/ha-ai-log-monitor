@@ -1,0 +1,36 @@
+name: "AI Log Monitor"
+version: "1.0.0"
+slug: "ai_log_monitor"
+description: >-
+  Daily AI-powered analysis of Home Assistant logs using the Perplexity Sonar
+  API. Identifies errors and warnings, groups them by root cause, assigns
+  severity, and suggests fixes. Sends a concise summary as a notification.
+url: "https://github.com/YOUR_USERNAME/ha-ai-log-monitor"
+arch:
+  - amd64
+  - aarch64
+  - armv7
+  - i386
+startup: application
+boot: auto
+homeassistant_api: true
+hassio_api: true
+hassio_role: default
+map:
+  - type: data
+options:
+  pplx_api_key: ""
+  pplx_model: "sonar"
+  run_time: "07:00"
+  notify_service: "persistent_notification.create"
+  max_log_chars: 60000
+  log_lines: 5000
+  write_to_system_log: true
+schema:
+  pplx_api_key: password
+  pplx_model: "list(sonar|sonar-pro|sonar-reasoning-pro)"
+  run_time: "match(^([01]?\\d|2[0-3]):[0-5]\\d$)"
+  notify_service: str
+  max_log_chars: "int(1000,200000)"
+  log_lines: "int(100,50000)"
+  write_to_system_log: bool
