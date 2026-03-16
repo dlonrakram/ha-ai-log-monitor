@@ -1,0 +1,7 @@
+#!/usr/bin/execlineb -S1
+# ==============================================================================
+# AI Log Monitor — Service finish script
+# Take down the s6 supervision tree when the service exits.
+# ==============================================================================
+
+/run/s6/basedir/bin/halt

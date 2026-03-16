@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bashio
 # ==============================================================================
-# AI Log Monitor — Entrypoint
+# AI Log Monitor — Service run script
 # ==============================================================================
 
 bashio::log.info "Starting AI Log Monitor..."

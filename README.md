@@ -295,18 +295,21 @@ ha-ai-log-monitor/
     ├── build.yaml
     ├── config.yaml
     ├── requirements.txt
-    ├── run.sh
     ├── translations/
     │   └── en.yaml
+    ├── rootfs/
+    │   └── etc/services.d/ai_log_monitor/
+    │       ├── run              # s6 service script (reads config, launches Python)
+    │       └── finish           # s6 finish script (halts container on exit)
     └── app/
         ├── __init__.py
-        ├── main.py            # Entry point, wires components, scheduler
-        ├── config.py           # Loads env vars into Config object
-        ├── ha_client.py        # Supervisor/HA REST API client
-        ├── logs_collector.py   # Fetches & pre-processes Core logs
-        ├── pplx_client.py      # Perplexity Sonar API client
+        ├── main.py              # Entry point, wires components, scheduler
+        ├── config.py            # Loads env vars into Config object
+        ├── ha_client.py         # Supervisor/HA REST API client
+        ├── logs_collector.py    # Fetches & pre-processes Core logs
+        ├── pplx_client.py       # Perplexity Sonar API client
         ├── summary_formatter.py # Formats notifications & detailed reports
-        └── scheduler.py        # Daily schedule + startup run
+        └── scheduler.py         # Daily schedule + startup run
 ```
 
 ---

@@ -13,6 +13,7 @@ arch:
   - i386
 startup: application
 boot: auto
+init: false
 homeassistant_api: true
 hassio_api: true
 hassio_role: default
