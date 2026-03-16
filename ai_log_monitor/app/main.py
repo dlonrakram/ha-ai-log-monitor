@@ -91,12 +91,16 @@ def run_analysis(cfg: Config, ha: HAClient) -> None:
     logger.info("Sending notification via %s", cfg.notify_service)
     ha.send_notification(cfg.notify_service, title, message)
 
-    # 5. Optionally write detailed report to system log ---------------------
+    # 5. Log the detailed report to the add-on log -------------------------
+    for line in detailed.splitlines():
+        logger.info(line)
+
+    # 6. Optionally write detailed report to system log ---------------------
     if cfg.write_to_system_log:
         logger.info("Writing detailed report to HA system log")
         ha.write_system_log(detailed, level="warning")
 
-    # 6. Update state -------------------------------------------------------
+    # 7. Update state -------------------------------------------------------
     issue_count = len(analysis.get("issues", []))
     _save_state(
         cfg.state_file,
