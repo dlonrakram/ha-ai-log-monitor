@@ -5,7 +5,7 @@ description: >-
   Daily AI-powered analysis of Home Assistant logs using the Perplexity Sonar
   API. Identifies errors and warnings, groups them by root cause, assigns
   severity, and suggests fixes. Sends a concise summary as a notification.
-url: "https://github.com/YOUR_USERNAME/ha-ai-log-monitor"
+url: "https://github.com/dlonrakram/ha-ai-log-monitor"
 arch:
   - amd64
   - aarch64
