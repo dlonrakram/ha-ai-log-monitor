@@ -1,5 +1,5 @@
 name: "AI Log Monitor"
-version: "1.0.1"
+version: "1.0.2"
 slug: "ai_log_monitor"
 description: >-
   Daily AI-powered analysis of Home Assistant logs using the Perplexity Sonar
