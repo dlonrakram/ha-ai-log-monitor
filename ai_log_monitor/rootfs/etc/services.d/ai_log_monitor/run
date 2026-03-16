@@ -18,4 +18,5 @@ export WRITE_TO_SYSTEM_LOG="$(bashio::config 'write_to_system_log')"
 # SUPERVISOR_TOKEN is automatically injected by the Supervisor.
 # It is used for both log collection and HA API calls.
 
-exec python3 /app/main.py
+cd /
+exec python3 -m app.main
