@@ -1,5 +1,5 @@
 name: "AI Log Monitor"
-version: "1.0.5"
+version: "1.0.6"
 slug: "ai_log_monitor"
 description: >-
   Daily AI-powered analysis of Home Assistant logs using the Perplexity Sonar
@@ -27,6 +27,7 @@ options:
   max_log_chars: 60000
   log_lines: 5000
   write_to_system_log: true
+  overrides: []
 schema:
   pplx_api_key: password
   pplx_model: "list(sonar|sonar-pro|sonar-reasoning-pro)"
@@ -35,3 +36,6 @@ schema:
   max_log_chars: "int(1000,200000)"
   log_lines: "int(100,50000)"
   write_to_system_log: bool
+  overrides:
+    - match: str
+      action: "list(ignore|force_low|force_medium|force_high)"

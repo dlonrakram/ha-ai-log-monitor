@@ -48,6 +48,38 @@ def _save_state(path: str, state: dict) -> None:
     """Persist state to a JSON file."""
     Path(path).write_text(json.dumps(state, indent=2))
 
+# ---------------------------------------------------------------------------
+# Override handling
+# ---------------------------------------------------------------------------
+
+def _apply_severity_overrides(analysis: dict, overrides: list[dict]) -> None:
+    """Force severity on issue groups matching override patterns."""
+    if not overrides:
+        return
+    import re
+    rules = []
+    for rule in overrides:
+        pattern = rule.get("match", "")
+        action = rule.get("action", "")
+        if not pattern or not action.startswith("force_"):
+            continue
+        try:
+            compiled = re.compile(pattern, re.IGNORECASE)
+        except re.error:
+            compiled = re.compile(re.escape(pattern), re.IGNORECASE)
+        rules.append((compiled, action.replace("force_", "")))
+
+    for issue in analysis.get("issues", []):
+        haystack = " ".join([
+            issue.get("title", ""),
+            issue.get("likely_cause", ""),
+            *issue.get("example_log_lines", []),
+        ])
+        for pattern, new_severity in rules:
+            if pattern.search(haystack):
+                issue["severity"] = new_severity
+                issue["title"] = f"{issue.get('title', '')} (overridden)"
+                break
 
 # ---------------------------------------------------------------------------
 # Core analysis job
@@ -63,6 +95,7 @@ def run_analysis(cfg: Config, ha: HAClient) -> None:
         ha_client=ha,
         log_lines=cfg.log_lines,
         max_chars=cfg.max_log_chars,
+        overrides=cfg.overrides,
     )
 
     if not log_text.strip():
@@ -82,6 +115,9 @@ def run_analysis(cfg: Config, ha: HAClient) -> None:
         api_key=cfg.pplx_api_key,
         model=cfg.pplx_model,
     )
+
+    # 2b. Apply user-defined severity overrides -----------------------------
+    _apply_severity_overrides(analysis, cfg.overrides)
 
     # 3. Format results -----------------------------------------------------
     title, message = format_notification(analysis)

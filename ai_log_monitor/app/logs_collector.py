@@ -4,6 +4,27 @@ from __future__ import annotations
 
 import logging
 import re
+import re
+
+def _compile_overrides(overrides: list[dict]) -> tuple[list, list]:
+    """Split overrides into (ignore_patterns, severity_rules)."""
+    ignores, severities = [], []
+    for rule in overrides:
+        pattern = rule.get("match", "")
+        action = rule.get("action", "")
+        if not pattern or not action:
+            continue
+        try:
+            compiled = re.compile(pattern)
+        except re.error:
+            # Fall back to literal substring match
+            compiled = re.compile(re.escape(pattern))
+        if action == "ignore":
+            ignores.append(compiled)
+        elif action.startswith("force_"):
+            severities.append((compiled, action.replace("force_", "")))
+    return ignores, severities
+
 
 from .ha_client import HAClient
 
@@ -43,6 +64,7 @@ def collect_logs(
     log_lines: int = 5000,
     max_chars: int = 60000,
     errors_only: bool = False,
+    overrides: list[dict] | None = None,
 ) -> str:
     """Fetch, filter, and truncate HA Core logs.
 
@@ -78,6 +100,15 @@ def collect_logs(
 
     # Drop known noisy lines.
     filtered = [ln for ln in lines if not _is_noise(ln)]
+
+    ignore_patterns, _ = _compile_overrides(overrides or [])
+    if ignore_patterns:
+        before = len(filtered)
+        filtered = [
+            ln for ln in filtered
+            if not any(p.search(ln) for p in ignore_patterns)
+        ]
+        logger.info("Overrides dropped %d lines", before - len(filtered))
 
     # Optionally keep only error/warning lines.
     if errors_only:

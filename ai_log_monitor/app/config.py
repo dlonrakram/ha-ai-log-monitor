@@ -28,6 +28,14 @@ class Config:
         # State file to track last successful run.
         self.state_file: str = "/data/last_run.json"
 
+        import json
+        try:
+            self.overrides: list[dict] = json.loads(
+                os.environ.get("OVERRIDES", "[]") or "[]"
+            )
+        except json.JSONDecodeError:
+            self.overrides = []
+
     def validate(self) -> None:
         """Exit early if critical settings are missing."""
         errors: list[str] = []

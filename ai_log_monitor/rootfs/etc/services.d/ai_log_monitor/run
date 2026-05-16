@@ -14,6 +14,7 @@ export NOTIFY_SERVICE="$(bashio::config 'notify_service')"
 export MAX_LOG_CHARS="$(bashio::config 'max_log_chars')"
 export LOG_LINES="$(bashio::config 'log_lines')"
 export WRITE_TO_SYSTEM_LOG="$(bashio::config 'write_to_system_log')"
+export OVERRIDES="$(bashio::config 'overrides')"
 
 # SUPERVISOR_TOKEN is automatically injected by the Supervisor.
 # It is used for both log collection and HA API calls.

@@ -39,3 +39,11 @@ configuration:
       If enabled, writes the full detailed analysis to the Home Assistant
       system log (visible in Settings > System > Logs) in addition to the
       notification summary.
+  overrides:
+    name: Log Overrides
+    description: >-
+      List of rules to override or ignore known noisy log patterns. Each rule
+      has a "match" (substring or regex) and an "action": "ignore" drops the
+      lines before sending to the AI; "force_low/medium/high" overrides the
+      severity assigned to any issue group whose title or example log lines
+      match the pattern.
